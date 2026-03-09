@@ -27,34 +27,24 @@ jobs:
             helm package "$chart" -d .cr-release-packages
           done
 
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages
-        continue-on-error: true
-
-      - name: Create gh-pages if not exists
+      - name: Publish to gh-pages
         run: |
-          if [ ! -d "gh-pages" ]; then
-            mkdir gh-pages
-            cd gh-pages
-            git init
-            git checkout -b gh-pages
-          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Update chart index
-        run: |
-          cp .cr-release-packages/*.tgz gh-pages/ 2>/dev/null || true
-          cd gh-pages
-          helm repo index . --url https://rskdproduct.github.io/envhub-charts
+          # Prepare gh-pages content in temp dir
+          mkdir -p /tmp/gh-pages
+          git fetch origin gh-pages && git archive origin/gh-pages | tar -x -C /tmp/gh-pages 2>/dev/null || true
 
-      - name: Push to gh-pages
-        run: |
-          cd gh-pages
+          # Copy new chart packages and generate index
+          cp .cr-release-packages/*.tgz /tmp/gh-pages/
+          helm repo index /tmp/gh-pages --url https://rskdproduct.github.io/envhub-charts
+
+          # Push to gh-pages
+          cd /tmp/gh-pages
+          git init -b gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --staged --quiet && exit 0
           git commit -m "Update Helm chart repository"
-          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/RSKDProduct/envhub-charts.git" gh-pages --force
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/RSKDProduct/envhub-charts.git" gh-pages
