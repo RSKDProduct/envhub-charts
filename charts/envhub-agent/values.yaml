@@ -1,0 +1,56 @@
+image:
+  repository: ghcr.io/rskdproduct/envhub-agent
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Required: Enrollment token from the EnvHub dashboard.
+# Each token is single-use and embeds the server address automatically.
+enrollmentToken: ""
+
+# Optional: Override server address (smart token already includes this)
+serverAddress: ""
+
+# Agent configuration
+logLevel: info
+syncInterval: 15
+metricsPort: 9090
+standalone: false
+
+# Namespace
+namespace:
+  create: true
+  name: envhub
+
+# RBAC
+rbac:
+  create: true
+
+# Persistence for offline data buffer
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: ""
+  accessMode: ReadWriteOnce
+
+# Resource limits
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# Prometheus ServiceMonitor (requires Prometheus Operator)
+serviceMonitor:
+  enabled: false
+  interval: 15s
+
+# Liveness and readiness probes
+livenessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 30
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10

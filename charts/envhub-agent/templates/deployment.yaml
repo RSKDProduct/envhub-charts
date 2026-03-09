@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "envhub-agent.fullname" . }}
+  namespace: {{ include "envhub-agent.namespace" . }}
+  labels:
+    {{- include "envhub-agent.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "envhub-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "envhub-agent.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.rbac.create }}
+      serviceAccountName: {{ include "envhub-agent.fullname" . }}
+      {{- end }}
+      containers:
+        - name: envhub-agent
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "--token"
+            - "$(ENROLLMENT_TOKEN)"
+            - "--data-dir"
+            - "/data"
+          env:
+            - name: ENROLLMENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "envhub-agent.fullname" . }}
+                  key: enrollment-token
+          envFrom:
+            - configMapRef:
+                name: {{ include "envhub-agent.fullname" . }}
+          ports:
+            - name: metrics
+              containerPort: {{ .Values.metricsPort }}
+              protocol: TCP
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: agent-data
+              mountPath: /data
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: agent-data
+          persistentVolumeClaim:
+            claimName: {{ include "envhub-agent.fullname" . }}
+      {{- end }}
