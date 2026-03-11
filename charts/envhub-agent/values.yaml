@@ -1,7 +1,22 @@
 image:
   repository: ghcr.io/rskdproduct/envhub-agent
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
+
+# Sidecar executor (Ubuntu + kubectl + helm) for running commands inside the cluster
+executor:
+  enabled: true
+  image:
+    repository: ghcr.io/rskdproduct/envhub-runner
+    tag: latest
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
 
 # Required: Enrollment token from the EnvHub dashboard.
 # Each token is single-use and embeds the server address automatically.

@@ -33,6 +33,14 @@ spec:
                 secretKeyRef:
                   name: {{ include "envhub-agent.fullname" . }}
                   key: enrollment-token
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           envFrom:
             - configMapRef:
                 name: {{ include "envhub-agent.fullname" . }}
@@ -59,6 +67,14 @@ spec:
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.executor.enabled }}
+        - name: executor
+          image: "{{ .Values.executor.image.repository }}:{{ .Values.executor.image.tag }}"
+          imagePullPolicy: {{ .Values.executor.image.pullPolicy }}
+          command: ["tail", "-f", "/dev/null"]
+          resources:
+            {{- toYaml .Values.executor.resources | nindent 12 }}
+        {{- end }}
       {{- if .Values.persistence.enabled }}
       volumes:
         - name: agent-data
