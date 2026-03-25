@@ -27,11 +27,25 @@ rules:
       - statefulsets
       - daemonsets
     verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources:
+      - events
+      - secrets
+    verbs: ["get", "list"]
   - apiGroups: ["batch"]
     resources:
       - jobs
       - cronjobs
     verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+    verbs: ["get", "list"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources:
+      - nodes
+      - pods
+    verbs: ["get", "list"]
   # Write permissions for actions (scale, restart, delete)
   - apiGroups: [""]
     resources:
