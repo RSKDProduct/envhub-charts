@@ -86,9 +86,27 @@ spec:
           resources:
             {{- toYaml .Values.executor.resources | nindent 12 }}
         {{- end }}
-      {{- if .Values.persistence.enabled }}
+        {{- if .Values.eventExporter.enabled }}
+        - name: event-exporter
+          image: "{{ .Values.eventExporter.image.repository }}:{{ .Values.eventExporter.image.tag }}"
+          imagePullPolicy: {{ .Values.eventExporter.image.pullPolicy }}
+          args:
+            - -conf=/etc/event-exporter/config.yaml
+          volumeMounts:
+            - name: event-exporter-config
+              mountPath: /etc/event-exporter
+              readOnly: true
+          resources:
+            {{- toYaml .Values.eventExporter.resources | nindent 12 }}
+        {{- end }}
       volumes:
+        {{- if .Values.persistence.enabled }}
         - name: agent-data
           persistentVolumeClaim:
             claimName: {{ include "envhub-agent.fullname" . }}
-      {{- end }}
+        {{- end }}
+        {{- if .Values.eventExporter.enabled }}
+        - name: event-exporter-config
+          configMap:
+            name: {{ include "envhub-agent.fullname" . }}-event-exporter
+        {{- end }}

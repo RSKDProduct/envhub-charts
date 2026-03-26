@@ -1,0 +1,23 @@
+{{- if .Values.eventExporter.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "envhub-agent.fullname" . }}-event-exporter
+  namespace: {{ include "envhub-agent.namespace" . }}
+  labels:
+    {{- include "envhub-agent.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    logLevel: info
+    logFormat: json
+    route:
+      routes:
+        - match:
+            - receiver: "envhub-agent"
+    receivers:
+      - name: "envhub-agent"
+        webhook:
+          endpoint: "http://127.0.0.1:8090/events/ingest"
+          headers:
+            Content-Type: "application/json"
+{{- end }}

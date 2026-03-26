@@ -18,6 +18,21 @@ executor:
       cpu: 500m
       memory: 512Mi
 
+# Event exporter sidecar — captures ALL K8s events and sends to the agent
+eventExporter:
+  enabled: true
+  image:
+    repository: ghcr.io/resmoio/kubernetes-event-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 25m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
 # Required: Enrollment token from the EnvHub dashboard.
 # Each token is single-use and embeds the server address automatically.
 enrollmentToken: ""
