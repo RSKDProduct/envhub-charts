@@ -31,10 +31,10 @@ syncInterval: 15
 metricsPort: 9090
 standalone: false
 
-# Namespace
+# Namespace — set to true only if you want the chart to create the namespace resource.
+# Usually unnecessary: use `helm install --namespace <ns> --create-namespace` instead.
 namespace:
-  create: true
-  name: envhub
+  create: false
 
 # RBAC
 rbac:
@@ -61,11 +61,19 @@ serviceMonitor:
   enabled: false
   interval: 15s
 
+# Graceful shutdown — preStop hook sleeps 5s so K8s removes pod from endpoints
+# before container stops, preventing false "Unhealthy" Warning events during rollouts
+terminationGracePeriodSeconds: 30
+
 # Liveness and readiness probes
 livenessProbe:
   initialDelaySeconds: 10
   periodSeconds: 30
+  timeoutSeconds: 3
+  failureThreshold: 3
 
 readinessProbe:
   initialDelaySeconds: 5
   periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3

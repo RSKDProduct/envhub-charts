@@ -41,8 +41,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Namespace
+Namespace — always use the Helm release namespace (--namespace flag)
 */}}
 {{- define "envhub-agent.namespace" -}}
-{{- .Values.namespace.name | default "envhub" }}
+{{- .Release.Namespace }}
 {{- end }}
