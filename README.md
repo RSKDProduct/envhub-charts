@@ -21,8 +21,11 @@ Each token is **single-use** and expires after 1 hour.
 
 ```bash
 helm install envhub-agent envhub/envhub-agent \
+  --namespace agent-envhub --create-namespace \
   --set enrollmentToken="<YOUR_TOKEN>"
 ```
+
+Deploy into any namespace you want — the chart uses the Helm release namespace (`--namespace` flag) for all resources. No hardcoded namespace.
 
 The agent will automatically connect to the EnvHub server (the server address is embedded in the token).
 
@@ -38,6 +41,9 @@ The agent will automatically connect to the EnvHub server (the server address is
 | `syncInterval` | Inventory sync interval (seconds) | `15` |
 | `metricsPort` | Prometheus metrics port | `9090` |
 | `standalone` | Run without server connection | `false` |
+| `executor.enabled` | Enable sidecar executor (kubectl/helm) | `true` |
+| `executor.image.repository` | Executor image | `ghcr.io/rskdproduct/envhub-runner` |
+| `executor.image.tag` | Executor image tag | `latest` |
 | `persistence.enabled` | Enable persistent storage | `true` |
 | `persistence.size` | Storage size | `1Gi` |
 | `persistence.storageClass` | Storage class | `""` (cluster default) |
@@ -47,19 +53,32 @@ The agent will automatically connect to the EnvHub server (the server address is
 | `resources.limits.memory` | Memory limit | `256Mi` |
 | `serviceMonitor.enabled` | Enable Prometheus ServiceMonitor | `false` |
 | `rbac.create` | Create RBAC resources | `true` |
-| `namespace.create` | Create namespace | `true` |
-| `namespace.name` | Namespace name | `envhub` |
+| `namespace.create` | Create the namespace resource | `false` |
+
+## Namespace
+
+The chart is **namespace-agnostic** — all resources are deployed into the Helm release namespace. Use `--namespace` to target any namespace:
+
+```bash
+# Deploy into a custom namespace
+helm install envhub-agent envhub/envhub-agent \
+  --namespace my-namespace --create-namespace \
+  --set enrollmentToken="<YOUR_TOKEN>"
+```
+
+Set `namespace.create: true` only if you need the chart itself to create the Namespace resource (usually unnecessary — `--create-namespace` handles this).
 
 ## Upgrading
 
 ```bash
-helm upgrade envhub-agent envhub/envhub-agent
+helm upgrade envhub-agent envhub/envhub-agent \
+  --namespace agent-envhub
 ```
 
 ## Uninstalling
 
 ```bash
-helm uninstall envhub-agent
+helm uninstall envhub-agent --namespace agent-envhub
 ```
 
 ## What the agent collects
