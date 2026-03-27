@@ -61,6 +61,11 @@ namespace:
 rbac:
   create: true
 
+# Self-upgrade: grants the agent permissions to manage its own helm release
+# Required for the platform's remote agent upgrade feature
+selfUpgrade:
+  enabled: true
+
 # Persistence for offline data buffer
 persistence:
   enabled: true
