@@ -20,3 +20,8 @@ data:
   RUNNER_ENABLED: "true"
   RUNNER_CONTAINER_NAME: "executor"
   {{- end }}
+  HELM_RELEASE_NAME: {{ .Release.Name | quote }}
+  HELM_RELEASE_NAMESPACE: {{ .Release.Namespace | quote }}
+  {{- if .Values.chartRepo }}
+  HELM_CHART_REPO: {{ .Values.chartRepo | quote }}
+  {{- end }}

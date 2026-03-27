@@ -43,6 +43,9 @@ serverAddress: ""
 # Optional: Human-readable display name for this agent (defaults to pod hostname)
 agentName: ""
 
+# Helm chart OCI repository for remote agent upgrades
+chartRepo: "oci://envhubrskd.azurecr.io/helm"
+
 # Agent configuration
 logLevel: info
 syncInterval: 15
