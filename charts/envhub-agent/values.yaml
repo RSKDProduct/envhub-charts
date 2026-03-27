@@ -40,6 +40,9 @@ enrollmentToken: ""
 # Optional: Override server address (smart token already includes this)
 serverAddress: ""
 
+# Optional: Human-readable display name for this agent (defaults to pod hostname)
+agentName: ""
+
 # Agent configuration
 logLevel: info
 syncInterval: 15

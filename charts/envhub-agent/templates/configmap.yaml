@@ -13,3 +13,6 @@ data:
   {{- if .Values.serverAddress }}
   SERVER_ADDRESS: {{ .Values.serverAddress | quote }}
   {{- end }}
+  {{- if .Values.agentName }}
+  AGENT_NAME: {{ .Values.agentName | quote }}
+  {{- end }}
