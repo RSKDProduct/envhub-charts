@@ -16,3 +16,7 @@ data:
   {{- if .Values.agentName }}
   AGENT_NAME: {{ .Values.agentName | quote }}
   {{- end }}
+  {{- if .Values.executor.enabled }}
+  RUNNER_ENABLED: "true"
+  RUNNER_CONTAINER_NAME: "executor"
+  {{- end }}
