@@ -63,37 +63,4 @@ rules:
     resources:
       - deployments/scale
     verbs: ["get", "update", "patch"]
-{{- if and .Values.selfUpgrade .Values.selfUpgrade.enabled }}
-  # Self-upgrade: agent needs to manage its own helm release resources
-  - apiGroups: [""]
-    resources:
-      - secrets
-      - serviceaccounts
-      - services
-      - configmaps
-      - persistentvolumeclaims
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: ["apps"]
-    resources:
-      - deployments
-      - statefulsets
-      - daemonsets
-    verbs: ["create", "delete"]
-  - apiGroups: ["batch"]
-    resources:
-      - jobs
-      - cronjobs
-    verbs: ["create", "update", "patch", "delete"]
-  - apiGroups: ["rbac.authorization.k8s.io"]
-    resources:
-      - roles
-      - rolebindings
-      - clusterroles
-      - clusterrolebindings
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete", "bind", "escalate"]
-  - apiGroups: ["monitoring.coreos.com"]
-    resources:
-      - servicemonitors
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-{{- end }}
 {{- end }}
