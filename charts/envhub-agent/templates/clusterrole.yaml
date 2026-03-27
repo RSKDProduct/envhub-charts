@@ -63,7 +63,7 @@ rules:
     resources:
       - deployments/scale
     verbs: ["get", "update", "patch"]
-{{- if .Values.selfUpgrade.enabled }}
+{{- if and .Values.selfUpgrade .Values.selfUpgrade.enabled }}
   # Self-upgrade: agent needs to manage its own helm release resources
   - apiGroups: [""]
     resources:
