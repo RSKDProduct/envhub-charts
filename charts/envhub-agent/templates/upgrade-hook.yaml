@@ -24,13 +24,12 @@ spec:
             - sh
             - -c
             - |
-              echo "Reading agent credentials from /data/credentials.json"
-              TOKEN=$(cat /data/credentials.json | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
+              echo "Confirming upgrade: actionId=${ACTION_ID} version=${TARGET_VERSION}"
+              TOKEN=$(cat /etc/upgrade-token/token)
               if [ -z "$TOKEN" ]; then
-                echo "ERROR: Could not read access_token from credentials.json"
+                echo "ERROR: Could not read upgrade token"
                 exit 1
               fi
-              echo "Confirming upgrade: actionId=${ACTION_ID} version=${TARGET_VERSION}"
               curl -sf --retry 3 --retry-delay 5 -X POST \
                 "${SERVER_URL}/api/v1/agents/${AGENT_ID}/confirm-upgrade" \
                 -H "Content-Type: application/json" \
@@ -50,12 +49,10 @@ spec:
               value: {{ .Values.upgrade.actionId | quote }}
             - name: TARGET_VERSION
               value: {{ .Values.image.tag | quote }}
-          {{- if .Values.persistence.enabled }}
           volumeMounts:
-            - name: agent-data
-              mountPath: /data
+            - name: upgrade-token
+              mountPath: /etc/upgrade-token
               readOnly: true
-          {{- end }}
           resources:
             requests:
               cpu: 10m
@@ -63,10 +60,8 @@ spec:
             limits:
               cpu: 50m
               memory: 32Mi
-      {{- if .Values.persistence.enabled }}
       volumes:
-        - name: agent-data
-          persistentVolumeClaim:
-            claimName: {{ include "envhub-agent.fullname" . }}
-      {{- end }}
+        - name: upgrade-token
+          secret:
+            secretName: {{ include "envhub-agent.fullname" . }}-upgrade-token
 {{- end }}
