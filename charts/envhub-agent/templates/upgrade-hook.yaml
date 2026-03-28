@@ -12,6 +12,7 @@ metadata:
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
   ttlSecondsAfterFinished: 300
+  activeDeadlineSeconds: 120
   backoffLimit: 3
   template:
     spec:
@@ -19,7 +20,7 @@ spec:
       serviceAccountName: {{ include "envhub-agent.fullname" . }}
       containers:
         - name: confirm
-          image: curlimages/curl:latest
+          image: curlimages/curl:8.7.1
           command:
             - sh
             - -c
