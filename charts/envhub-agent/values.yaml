@@ -111,4 +111,3 @@ upgrade:
   agentId: ""
   tenantId: ""
   serverUrl: ""
-  token: ""
