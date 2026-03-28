@@ -1,0 +1,56 @@
+{{- if .Values.upgrade.actionId }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "envhub-agent.fullname" . }}-upgrade-confirm
+  namespace: {{ include "envhub-agent.namespace" . }}
+  labels:
+    {{- include "envhub-agent.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "envhub-agent.fullname" . }}
+      containers:
+        - name: confirm
+          image: curlimages/curl:latest
+          command:
+            - sh
+            - -c
+            - |
+              echo "Confirming upgrade: actionId=${ACTION_ID} version=${TARGET_VERSION}"
+              curl -sf --retry 3 --retry-delay 5 -X POST \
+                "${SERVER_URL}/api/v1/agents/${AGENT_ID}/confirm-upgrade" \
+                -H "Content-Type: application/json" \
+                -H "Authorization: Bearer ${UPGRADE_TOKEN}" \
+                -H "X-Tenant-Id: ${TENANT_ID}" \
+                -d "{\"actionId\":\"${ACTION_ID}\",\"version\":\"${TARGET_VERSION}\"}"
+              echo ""
+              echo "Upgrade confirmed successfully"
+          env:
+            - name: SERVER_URL
+              value: {{ .Values.upgrade.serverUrl | quote }}
+            - name: AGENT_ID
+              value: {{ .Values.upgrade.agentId | quote }}
+            - name: TENANT_ID
+              value: {{ .Values.upgrade.tenantId | quote }}
+            - name: ACTION_ID
+              value: {{ .Values.upgrade.actionId | quote }}
+            - name: TARGET_VERSION
+              value: {{ .Values.image.tag | quote }}
+            - name: UPGRADE_TOKEN
+              value: {{ .Values.upgrade.token | quote }}
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 50m
+              memory: 32Mi
+{{- end }}

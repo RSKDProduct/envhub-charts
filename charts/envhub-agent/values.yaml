@@ -103,3 +103,12 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 3
   failureThreshold: 3
+
+# Upgrade confirmation (set automatically by agent executor during helm upgrade)
+# Do NOT set these manually — they are injected via --set during platform upgrades
+upgrade:
+  actionId: ""
+  agentId: ""
+  tenantId: ""
+  serverUrl: ""
+  token: ""
