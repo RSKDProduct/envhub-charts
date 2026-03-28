@@ -1,4 +1,4 @@
-{{- if .Values.upgrade.actionId }}
+{{- if and .Values.upgrade .Values.upgrade.actionId }}
 apiVersion: batch/v1
 kind: Job
 metadata:
