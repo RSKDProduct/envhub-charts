@@ -21,24 +21,38 @@ spec:
       containers:
         - name: confirm
           image: curlimages/curl:8.7.1
+          imagePullPolicy: IfNotPresent
           command:
             - sh
             - -c
             - |
-              echo "Confirming upgrade: actionId=${ACTION_ID} version=${TARGET_VERSION}"
-              TOKEN=$(cat /etc/upgrade-token/token)
+              # Validate required parameters
+              if [ -z "$SERVER_URL" ] || [ -z "$AGENT_ID" ] || [ -z "$ACTION_ID" ]; then
+                echo "Missing upgrade parameters. Skipping confirmation."
+                exit 0
+              fi
+
+              # Read access token from Secret
+              TOKEN=$(cat /etc/upgrade-token/token 2>/dev/null)
               if [ -z "$TOKEN" ]; then
-                echo "ERROR: Could not read upgrade token"
+                echo "ERROR: No upgrade token found at /etc/upgrade-token/token"
                 exit 1
               fi
-              curl -sf --retry 3 --retry-delay 5 -X POST \
+
+              # Wait for new agent pod to be ready before calling API
+              echo "Waiting 10s for new agent pod to stabilize..."
+              sleep 10
+
+              echo "Confirming upgrade: actionId=${ACTION_ID} version=${TARGET_VERSION}"
+              curl -sf --retry 5 --retry-delay 10 --retry-max-time 60 -X POST \
                 "${SERVER_URL}/api/v1/agents/${AGENT_ID}/confirm-upgrade" \
                 -H "Content-Type: application/json" \
                 -H "Authorization: Bearer ${TOKEN}" \
                 -H "X-Tenant-Id: ${TENANT_ID}" \
                 -d "{\"actionId\":\"${ACTION_ID}\",\"version\":\"${TARGET_VERSION}\"}"
+
               echo ""
-              echo "Upgrade confirmed successfully"
+              echo "Upgrade to ${TARGET_VERSION} confirmed successfully"
           env:
             - name: SERVER_URL
               value: {{ .Values.upgrade.serverUrl | quote }}
