@@ -18,10 +18,18 @@ spec:
     spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ include "envhub-agent.fullname" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: confirm
           image: curlimages/curl:8.7.1
           imagePullPolicy: IfNotPresent
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - sh
             - -c
