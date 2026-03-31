@@ -1,15 +1,15 @@
 image:
   repository: ghcr.io/rskdproduct/envhub-agent
-  tag: v0.9.0
-  pullPolicy: IfNotPresent
+  tag: v0.8.0
+  pullPolicy: Always
 
 # Sidecar executor (Ubuntu + kubectl + helm) for running commands inside the cluster
 executor:
   enabled: true
   image:
     repository: ghcr.io/rskdproduct/envhub-runner
-    tag: v0.9.0
-    pullPolicy: IfNotPresent
+    tag: v0.8.0
+    pullPolicy: Always
   resources:
     requests:
       cpu: 50m
@@ -74,18 +74,13 @@ persistence:
   accessMode: ReadWriteOnce
 
 # Pod-level security context
-podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  fsGroup: 1000
+podSecurityContext: {}
 
-# Container-level security context (applied to all containers)
-securityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
+# Container-level security context
+# NOTE: The executor sidecar runs kubectl/helm which need writable filesystem
+# and root access for pre-configured helm repos. Do not set runAsNonRoot or
+# readOnlyRootFilesystem here — it applies to ALL containers including executor.
+securityContext: {}
 
 # Resource limits
 resources:
