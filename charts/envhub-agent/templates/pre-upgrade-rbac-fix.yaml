@@ -1,32 +1,6 @@
-{{- if .Values.rbac.create }}
-# Pre-upgrade hook: delete the old ClusterRoleBinding so Helm can recreate it
-# with a new roleRef (K8s does not allow changing roleRef on existing bindings)
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: {{ include "envhub-agent.fullname" . }}-rbac-fix
-  namespace: {{ include "envhub-agent.namespace" . }}
-  labels:
-    {{- include "envhub-agent.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": pre-upgrade
-    "helm.sh/hook-weight": "-5"
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-spec:
-  backoffLimit: 1
-  activeDeadlineSeconds: 30
-  template:
-    spec:
-      serviceAccountName: {{ include "envhub-agent.fullname" . }}
-      restartPolicy: Never
-      containers:
-        - name: rbac-fix
-          image: {{ .Values.executor.image.repository }}:{{ .Values.executor.image.tag }}
-          command:
-            - sh
-            - -c
-            - |
-              echo "Deleting old ClusterRoleBinding to allow roleRef change..."
-              kubectl delete clusterrolebinding {{ include "envhub-agent.fullname" . }} --ignore-not-found=true
-              echo "Done"
-{{- end }}
+{{/*
+  Migration hook — no longer needed.
+  All agents have been upgraded to cluster-admin binding (chart 0.10.0+).
+  This file is kept empty to avoid Helm "missing template" errors on
+  downgrades. Safe to delete in a future chart version.
+*/}}
