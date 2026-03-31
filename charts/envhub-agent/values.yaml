@@ -1,15 +1,15 @@
 image:
   repository: ghcr.io/rskdproduct/envhub-agent
-  tag: latest
-  pullPolicy: Always
+  tag: v0.9.0
+  pullPolicy: IfNotPresent
 
 # Sidecar executor (Ubuntu + kubectl + helm) for running commands inside the cluster
 executor:
   enabled: true
   image:
     repository: ghcr.io/rskdproduct/envhub-runner
-    tag: latest
-    pullPolicy: Always
+    tag: v0.9.0
+    pullPolicy: IfNotPresent
   resources:
     requests:
       cpu: 50m
@@ -23,7 +23,7 @@ eventExporter:
   enabled: true
   image:
     repository: ghcr.io/resmoio/kubernetes-event-exporter
-    tag: latest
+    tag: v1.7
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -72,6 +72,20 @@ persistence:
   size: 1Gi
   storageClass: ""
   accessMode: ReadWriteOnce
+
+# Pod-level security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+# Container-level security context (applied to all containers)
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
 
 # Resource limits
 resources:

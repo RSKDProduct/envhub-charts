@@ -1,5 +1,36 @@
 {{- if and .Values.selfUpgrade .Values.selfUpgrade.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "envhub-agent.fullname" . }}-self-upgrade
+  labels:
+    {{- include "envhub-agent.labels" . | nindent 4 }}
+rules:
+  # Helm stores release state in Secrets (default) or ConfigMaps
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Manage Deployments, Jobs created by Helm releases
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Service, PVC, and ConfigMap resources managed by the chart
+  - apiGroups: [""]
+    resources: ["services", "persistentvolumeclaims", "serviceaccounts", "pods"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # RBAC resources the chart itself creates
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterroles", "clusterrolebindings"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # ServiceMonitor for Prometheus integration
+  - apiGroups: ["monitoring.coreos.com"]
+    resources: ["servicemonitors"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "envhub-agent.fullname" . }}-self-upgrade
@@ -8,7 +39,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: {{ include "envhub-agent.fullname" . }}-self-upgrade
 subjects:
   - kind: ServiceAccount
     name: {{ include "envhub-agent.fullname" . }}
