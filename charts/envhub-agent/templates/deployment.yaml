@@ -1,5 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
+{{- $livenessProbe := (get .Values "livenessProbe") | default (dict) }}
+{{- $readinessProbe := (get .Values "readinessProbe") | default (dict) }}
+{{- $startupProbe := (get .Values "startupProbe") | default (dict) }}
 metadata:
   name: {{ include "envhub-agent.fullname" . }}
   namespace: {{ include "envhub-agent.namespace" . }}
@@ -72,26 +75,26 @@ spec:
             httpGet:
               path: /livez
               port: metrics
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 3 }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold | default 3 }}
+            initialDelaySeconds: {{ (get $livenessProbe "initialDelaySeconds") | default 10 }}
+            periodSeconds: {{ (get $livenessProbe "periodSeconds") | default 30 }}
+            timeoutSeconds: {{ (get $livenessProbe "timeoutSeconds") | default 3 }}
+            failureThreshold: {{ (get $livenessProbe "failureThreshold") | default 3 }}
           readinessProbe:
             httpGet:
               path: /healthz
               port: metrics
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 3 }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
+            initialDelaySeconds: {{ (get $readinessProbe "initialDelaySeconds") | default 5 }}
+            periodSeconds: {{ (get $readinessProbe "periodSeconds") | default 10 }}
+            timeoutSeconds: {{ (get $readinessProbe "timeoutSeconds") | default 3 }}
+            failureThreshold: {{ (get $readinessProbe "failureThreshold") | default 3 }}
           startupProbe:
             httpGet:
               path: /healthz
               port: metrics
-            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds | default 3 }}
-            failureThreshold: {{ .Values.startupProbe.failureThreshold | default 10 }}
+            initialDelaySeconds: {{ (get $startupProbe "initialDelaySeconds") | default 5 }}
+            periodSeconds: {{ (get $startupProbe "periodSeconds") | default 5 }}
+            timeoutSeconds: {{ (get $startupProbe "timeoutSeconds") | default 3 }}
+            failureThreshold: {{ (get $startupProbe "failureThreshold") | default 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.executor.enabled }}
