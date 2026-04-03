@@ -51,6 +51,16 @@ jobs:
             exit 0
           fi
 
+          # Guardrail: never downgrade chart app/image versions.
+          CURRENT_APP_VERSION="$(awk -F': ' '/^appVersion:/ { gsub(/"/, "", $2); print $2 }' "$CHART_FILE" | head -n1)"
+          CURRENT_APP_NORM="${CURRENT_APP_VERSION#v}"
+          TARGET_NORM="${TARGET_TAG#v}"
+          if [ "$(printf '%s\n%s\n' "$CURRENT_APP_NORM" "$TARGET_NORM" | sort -V | tail -n1)" != "$TARGET_NORM" ]; then
+            echo "Detected target tag ${TARGET_TAG} older than current appVersion ${CURRENT_APP_VERSION}; skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           APP_VERSION_NOW="$(awk -F': ' '/^appVersion:/ { gsub(/"/, "", $2); print $2 }' "$CHART_FILE" | head -n1)"
           AGENT_TAG_NOW="$(awk -F': ' '/^  tag:/ && ++c==1 { gsub(/"/, "", $2); print $2 }' "$VALUES_FILE")"
           RUNNER_TAG_NOW="$(awk -F': ' '/^    tag:/ && ++d==1 { gsub(/"/, "", $2); print $2 }' "$VALUES_FILE")"
