@@ -1,0 +1,395 @@
+apiVersion: v1
+entries:
+  envhub-agent:
+  - apiVersion: v2
+    appVersion: v0.11.0
+    created: "2026-04-03T18:00:04.050867896Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 01c4493d9b4db3da3eb88f5742581a7270520ad0278a1818cfbdad486fed2b4e
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.13.3.tgz
+    version: 0.13.3
+  - apiVersion: v2
+    appVersion: v0.11.0
+    created: "2026-04-03T18:00:04.049814207Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: c1ba943d1510671481b6f43ccd75141cf784fbe8e5cae4e0771b65876a56f486
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.13.2.tgz
+    version: 0.13.2
+  - apiVersion: v2
+    appVersion: v0.11.1
+    created: "2026-04-03T18:00:04.049287373Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 6b16a462a814b5a4f2f01202db6c78375c33edd7267e0d78d437609f08df7d88
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.13.1.tgz
+    version: 0.13.1
+  - apiVersion: v2
+    appVersion: 0.11.0
+    created: "2026-04-03T18:00:04.048727188Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: d4ad6c567f44cfe36188a0fcc09e0b834b3f64f8dc19999754c535b90d3d63e5
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.13.0.tgz
+    version: 0.13.0
+  - apiVersion: v2
+    appVersion: 0.11.0
+    created: "2026-04-03T18:00:04.04820431Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 6a26e9c4637d48da1a65d8fb8a5d3f95852d41c4422fab2d8a562a646582f1b1
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.12.0.tgz
+    version: 0.12.0
+  - apiVersion: v2
+    appVersion: v0.11.1
+    created: "2026-04-03T18:00:04.047668251Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: b580d7c7445bcb3ce178fc1f446e568aeed7809631e6dad8eedf8b277057b130
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.11.1.tgz
+    version: 0.11.1
+  - apiVersion: v2
+    appVersion: 0.9.0
+    created: "2026-04-03T18:00:04.047095808Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: e1cf12e60cf627a7e40506aa1faccd062dad689eb3796b00d0ab93d87595b401
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.11.0.tgz
+    version: 0.11.0
+  - apiVersion: v2
+    appVersion: 0.8.0
+    created: "2026-04-03T18:00:04.046561433Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: ac5a68dc04052cda3c2d4413a1987ba6d629a43938bf208b65b7a79d42a5fd23
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.10.0.tgz
+    version: 0.10.0
+  - apiVersion: v2
+    appVersion: 0.8.0
+    created: "2026-04-03T18:00:04.054847251Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 3f8af9b887c4deb5d795a9b637b4aaaf99cc8626a0b2bd8bd637d1c3dfed898d
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 0.7.0
+    created: "2026-04-03T18:00:04.054403351Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 373f348dbe01d1a23fce875455d245772a585fb71179800a4ad53d98d519298c
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.8.0.tgz
+    version: 0.8.0
+  - apiVersion: v2
+    appVersion: 0.6.0
+    created: "2026-04-03T18:00:04.053903618Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 3612f2b4b4fec286a6202c1bc3c64c20f6faef15aabf3df57c303ead2e3d46c8
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
+    appVersion: 0.5.0
+    created: "2026-04-03T18:00:04.05342067Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: a04573a6c87b06d4233ecc1480288153b41659e5353b2f0ea59127f91edff3f5
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2026-04-03T18:00:04.05297659Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: ab9cd2f8f14490ba4fee17e41a559cb68491db25408e759ccaea98865faa9e8e
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: 0.3.0
+    created: "2026-04-03T18:00:04.052510858Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 5107483c11424bc2fb3ad6fc357e40c8e1a763c23d88964be3acfd41fa317fed
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2026-04-03T18:00:04.052030944Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 9972ecf6b2ba7b3b560ae44b1bc80db61a0b1ec50cec81e1d1146508af6511d9
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2026-04-03T18:00:04.051539884Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: cee99790c3c4fbe48d545de07dfd4c1375837bf1a316e505db80f02400cfe992
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2026-04-03T18:00:04.046011363Z"
+    description: EnvHub Agent - Lightweight infrastructure collector & executor for
+      Kubernetes
+    digest: 13547382bfd5b978efa3ee41a12554f65a89e229698d535545efff7396301581
+    home: https://github.com/RSKDProduct/envhub-charts
+    keywords:
+    - envhub
+    - agent
+    - monitoring
+    - infrastructure
+    - kubernetes
+    maintainers:
+    - name: RSKD Product
+      url: https://github.com/RSKDProduct
+    name: envhub-agent
+    sources:
+    - https://github.com/RSKDProduct/envhub-charts
+    type: application
+    urls:
+    - https://rskdproduct.github.io/envhub-charts/envhub-agent-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-04-03T18:00:04.045462265Z"
