@@ -113,6 +113,21 @@ readinessProbe:
   timeoutSeconds: 3
   failureThreshold: 3
 
+# Startup probe gates liveness/readiness checks during enroll/connect startup.
+startupProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 12
+
+# Upgrade confirmation token secret configuration.
+# Either provide an existing secret name, or set create=true + token.
+# Secret must contain key: token
+upgradeTokenSecret:
+  existingSecret: ""
+  create: false
+  token: ""
+
 # Upgrade confirmation (set automatically by agent executor during helm upgrade)
 # Do NOT set these manually — they are injected via --set during platform upgrades
 upgrade:
