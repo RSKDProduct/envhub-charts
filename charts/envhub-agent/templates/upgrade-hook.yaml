@@ -1,4 +1,5 @@
 {{- if and .Values.upgrade .Values.upgrade.actionId }}
+{{- $upgradeTokenSecret := (get .Values "upgradeTokenSecret") | default (dict) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -86,5 +87,5 @@ spec:
       volumes:
         - name: upgrade-token
           secret:
-            secretName: {{ default (printf "%s-upgrade-token" (include "envhub-agent.fullname" .)) .Values.upgradeTokenSecret.existingSecret }}
+            secretName: {{ default (printf "%s-upgrade-token" (include "envhub-agent.fullname" .)) (get $upgradeTokenSecret "existingSecret") }}
 {{- end }}
