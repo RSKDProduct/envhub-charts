@@ -16,18 +16,22 @@ jobs:
 
       - name: Detect latest envhub-agent release tag
         id: latest
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          TAG="$(git ls-remote --tags --refs "https://x-access-token:${GH_TOKEN}@github.com/RSKDProduct/envhub-agent.git" 'v*' \
-            | awk '{print $2}' \
-            | sed 's#refs/tags/##' \
+          TOKEN="$(curl -fsSL "https://ghcr.io/token?scope=repository:rskdproduct/envhub-agent:pull" | jq -r '.token // empty')"
+          if [ -z "$TOKEN" ]; then
+            echo "No GHCR pull token resolved; skipping sync run."
+            echo "tag=" >> "$GITHUB_OUTPUT"
+            echo "version=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          TAG="$(curl -fsSL -H "Authorization: Bearer ${TOKEN}" "https://ghcr.io/v2/rskdproduct/envhub-agent/tags/list" \
+            | jq -r '.tags[]? // empty' \
             | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
             | sort -V \
             | tail -n1 || true)"
           if [ -z "$TAG" ]; then
-            echo "No envhub-agent semver tag resolved; skipping sync run."
+            echo "No envhub-agent semver image tag resolved; skipping sync run."
             echo "tag=" >> "$GITHUB_OUTPUT"
             echo "version=" >> "$GITHUB_OUTPUT"
             exit 0
