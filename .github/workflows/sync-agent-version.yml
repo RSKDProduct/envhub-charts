@@ -1,0 +1,69 @@
+name: Sync EnvHub Agent Version
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect latest envhub-agent release tag
+        id: latest
+        run: |
+          set -euo pipefail
+          TAG="$(curl -fsSL https://api.github.com/repos/RSKDProduct/envhub-agent/releases/latest | jq -r '.tag_name')"
+          if [ -z "$TAG" ] || [ "$TAG" = "null" ]; then
+            echo "Unable to resolve latest envhub-agent release tag"
+            exit 1
+          fi
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Align chart appVersion and image tags
+        id: align
+        run: |
+          set -euo pipefail
+          CHART_FILE="charts/envhub-agent/Chart.yaml"
+          VALUES_FILE="charts/envhub-agent/values.yaml"
+          TARGET_TAG="${{ steps.latest.outputs.tag }}"
+
+          APP_VERSION_NOW="$(awk -F': ' '/^appVersion:/ { gsub(/"/, "", $2); print $2 }' "$CHART_FILE" | head -n1)"
+          AGENT_TAG_NOW="$(awk -F': ' '/^  tag:/ && ++c==1 { gsub(/"/, "", $2); print $2 }' "$VALUES_FILE")"
+          RUNNER_TAG_NOW="$(awk -F': ' '/^    tag:/ && ++d==1 { gsub(/"/, "", $2); print $2 }' "$VALUES_FILE")"
+
+          if [ "$APP_VERSION_NOW" = "$TARGET_TAG" ] && [ "$AGENT_TAG_NOW" = "$TARGET_TAG" ] && [ "$RUNNER_TAG_NOW" = "$TARGET_TAG" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          sed -i.bak -E "s/^appVersion: .*/appVersion: \"${TARGET_TAG}\"/" "$CHART_FILE"
+          sed -i.bak -E "0,/^  tag: .*/s//  tag: ${TARGET_TAG}/" "$VALUES_FILE"
+          sed -i.bak -E "0,/^    tag: .*/s//    tag: ${TARGET_TAG}/" "$VALUES_FILE"
+          rm -f "${CHART_FILE}.bak" "${VALUES_FILE}.bak"
+
+          CHART_VERSION_NOW="$(awk -F': ' '/^version:/ { print $2 }' "$CHART_FILE" | head -n1)"
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CHART_VERSION_NOW"
+          PATCH="${PATCH:-0}"
+          CHART_VERSION_NEXT="${MAJOR}.${MINOR}.$((PATCH + 1))"
+          sed -i.bak -E "s/^version: .*/version: ${CHART_VERSION_NEXT}/" "$CHART_FILE"
+          rm -f "${CHART_FILE}.bak"
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "chart_version_next=${CHART_VERSION_NEXT}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push sync
+        if: steps.align.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add charts/envhub-agent/Chart.yaml charts/envhub-agent/values.yaml
+          git commit -m "chore: sync envhub-agent version to ${{ steps.latest.outputs.tag }} (chart ${{ steps.align.outputs.chart_version_next }})"
+          git push origin HEAD:main
