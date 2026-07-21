@@ -89,7 +89,9 @@ spec:
             failureThreshold: {{ (get $readinessProbe "failureThreshold") | default 3 }}
           startupProbe:
             httpGet:
-              path: /healthz
+              # Process-only: startup must not gate on control-plane reachability,
+              # or every server rollout / enrollment delay flaps the fleet (QA #52).
+              path: /livez
               port: metrics
             initialDelaySeconds: {{ (get $startupProbe "initialDelaySeconds") | default 5 }}
             periodSeconds: {{ (get $startupProbe "periodSeconds") | default 5 }}
